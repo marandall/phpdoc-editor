@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<>
+    <meta charset="UTF-8">
+    <title>Help Editor</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"
+            integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"
+          integrity="sha256-p6xU9YulB7E2Ic62/PX+h59ayb3PBJ0WFTEQxq0EjHw=" crossorigin="anonymous"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./assets/css/pfw.ui.menu.css" />
+
+    <script type="text/javascript" src="assets/js/phpdoc.editor.js"></script>
+    <script type="text/javascript" src="assets/js/elements.blockcollection.js"></script>
+    <script type="text/javascript" src="assets/js/elements.method.js"></script>
+    <script type="text/javascript" src="assets/js/elements.parameter.js"></script>
+    <script type="text/javascript" src="assets/js/elements.parametertype.js"></script>
+    <script type="text/javascript" src="assets/js/elements.textnode.js"></script>
+    <script type="text/javascript" src="assets/js/elements.translatableblock.js"></script>
+    <script type="text/javascript" src="assets/js/renderer.method.js"></script>
+    <script type="text/javascript" src="assets/js/jquery.menuhelper.js"></script>
+
+    <style>
+        .indent {
+            margin-left: 30px
+        }
+
+        body {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0">
+    <div id="editor" style="position: absolute; left: 0; top: 0; width: 50%; height: 100%; overflow-y: scroll">
+
+    </div>
+
+    <div id="json" style="position: absolute; left: 50%;  top: 0; right: 0; bottom: 0; white-space: pre-wrap; font-size: smaller; overflow-y: scroll; padding: 10px; box-sizing: border-box">
+
+    </div>
+
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        let editor = new phpdoc.Editor($('#editor'), {});
+    });
+</script>
+
+</body>
+</html>
