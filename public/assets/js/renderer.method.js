@@ -2,7 +2,6 @@ phpdoc.renderers.SegmentContainerRender = function () {
     this.render = function (segment_container_data) {
         var container = $('<div></div>');
 
-        console.log(segment_container_data);
 
         $.each(segment_container_data.blocks, function (ix, segment) {
             if (segment.data.translations.en) {
@@ -13,7 +12,7 @@ phpdoc.renderers.SegmentContainerRender = function () {
                     );
                 } else {
                     container.append(
-                        $('<div style="margin-bottom: 1em; font-size: 14px">').text(en_contents)
+                        $('<div style="margin-bottom: 1em; font-size: 14px; white-space: pre-wrap">').text(en_contents)
                     );
                 }
             }
@@ -23,10 +22,34 @@ phpdoc.renderers.SegmentContainerRender = function () {
     };
 };
 
+phpdoc.renderers.TextSegmentRenderer = function () {
+    this.render = function (segment) {
+        if (segment.data.translations.en) {
+            let en_contents = segment.data.translations.en.data.contents,
+                container = $('<div></div>');
+
+            if (en_contents.indexOf('<?php') === 0) {
+                container.append(
+                    $('<div style="margin-bottom: 1em; font-size: 14px; padding: 10px; background: #dddddd; font-family: \'Courier New\'; white-space: pre-wrap ">').text(en_contents)
+                );
+            } else {
+                container.append(
+                    $('<div style="margin-bottom: 1em; font-size: 14px; white-space: pre-wrap">').text(en_contents)
+                );
+            }
+
+            return container;
+        }
+
+        return null;
+    };
+};
+
 phpdoc.renderers.Method = function () {
     this.render = function (method_data) {
         let name = method_data.data.name,
-            segment_renderer = new phpdoc.renderers.SegmentContainerRender(),
+            segment_renderer = new phpdoc.renderers.TextSegmentRenderer(),
+            segment_container_renderer = new phpdoc.renderers.SegmentContainerRender(),
             container = $('<div></div>');
 
         /*
@@ -63,7 +86,7 @@ phpdoc.renderers.Method = function () {
                 param_element.append(
                     h_element = $('<h3></h3>').text(param_data.data.name + ' : ' + param_data.data.types[0].data.type_name),
                     $('<div class="indent"></div>').append(
-                        segment_renderer.render(param_data.data.types[0].data.description.data)
+                        segment_container_renderer.render(param_data.data.types[0].data.description.data)
                     )
                 );
 
@@ -79,7 +102,7 @@ phpdoc.renderers.Method = function () {
                     union_types.push(type_data.data.type_name);
                     pe_child.append(
                         $('<h5></h5>').text(type_data.data.type_name),
-                        segment_renderer.render(type_data.data.description.data)
+                        segment_container_renderer.render(type_data.data.description.data)
                     );
                     param_element.append(pe_child);
                 });
@@ -116,27 +139,44 @@ phpdoc.renderers.Method = function () {
                 $('<span></span>').append(all_params),
                 ')'
             ),
-            segment_renderer.render(method_data.data.description.data)
+            segment_container_renderer.render(method_data.data.description.data)
         );
 
         container.append(
             $('<h2></h2>').text('Parameters'),
-            $('<div class="indent"></div>').append(detailed_param_elements)
+            $('<div></div>').append(detailed_param_elements)
         );
 
         function appendIfPresent(title, payload) {
-            console.log(payload);
             if (payload.data.blocks.length !== 0 || true) {
                 container.append(
                     $('<h2></h2>').text(title),
-                    segment_renderer.render(payload.data)
+                    segment_container_renderer.render(payload.data)
                 );
             }
         }
 
-        appendIfPresent('Return Types', method_data.data.return_types);
+        var rv_types = $('<div></div>');
+        $.each(method_data.data.return_types || [], function (ix, type_config) {
+            console.log(type_config);
+            rv_types.append(
+                $('<h3></h3>').text(type_config.data.type_name),
+                $('<div class="indent"></div>').append(
+                    segment_renderer.render(type_config.data.description)
+                )
+            );
+        });
+
+        container.append(
+            $('<h2>Return Value</h2>'),
+            method_data.data.return_value_description
+                ? segment_container_renderer.render(method_data.data.return_value_description.data)
+                : null,
+            rv_types
+        );
+
         appendIfPresent('Examples', method_data.data.examples);
-        appendIfPresent('Notes', method_data.data.examples);
+        appendIfPresent('Notes', method_data.data.notes);
 
         return container;
     }

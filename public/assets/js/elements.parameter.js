@@ -61,7 +61,6 @@ phpdoc.elements.Parameter = function (editor, init) {
         _element_name.text(init.name);
         _element_types.children().detach();
         $.each(_types, function (ix, type) {
-            console.log('Appending ' + type);
             _element_types.append(type.getElement());
         });
     }

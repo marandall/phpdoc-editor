@@ -11,7 +11,6 @@ phpdoc.elements.SectionCollection = function (editor, init) {
         _element,
         _content_element = $('<div></div>');
 
-    console.log(_state);
 
     this.addBlock = function(block) {
         _blocks.push(block);
