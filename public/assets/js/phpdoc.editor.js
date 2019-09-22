@@ -386,6 +386,7 @@ phpdoc.Editor = function (jParent, init) {
     };
 
     let load_config = JSON.parse(window.localStorage.getItem('latest_config_2')) || config_data;
+    load_config = config_data;
 
     var panel_container = $('#previews');
 
