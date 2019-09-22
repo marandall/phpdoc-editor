@@ -384,138 +384,6 @@ phpdoc.Editor = function (jParent, init) {
     }, 1000);
 };
 
-var config_2 = {
-    "meta": {}, "data": {
-        "name": "",
-        "description": {
-            "data": {
-                "blocks": [{
-                    "data": {
-                        "translations": {
-                            "en": {
-                                "meta": {},
-                                "data": {"lang": "en", "format": "text", "contents": ""}
-                            }
-                        }
-                    }
-                }]
-            }
-        },
-        "parameters": [{
-            "data": {
-                "name": "subject",
-                "optional": false,
-                "types": [{
-                    "data": {
-                        "type_name": "string",
-                        "description": {
-                            "data": {
-                                "blocks": [{
-                                    "data": {
-                                        "translations": {
-                                            "en": {
-                                                "meta": {},
-                                                "data": {
-                                                    "lang": "en",
-                                                    "format": "text",
-                                                    "contents": "The string to examine."
-                                                }
-                                            }
-                                        }
-                                    }
-                                }]
-                            }
-                        }
-                    }
-                }]
-            }
-        }, {
-            "data": {
-                "name": "mask",
-                "optional": false,
-                "types": [{
-                    "data": {
-                        "type_name": "string",
-                        "description": {
-                            "data": {
-                                "blocks": [{
-                                    "data": {
-                                        "translations": {
-                                            "en": {
-                                                "meta": {},
-                                                "data": {
-                                                    "lang": "en",
-                                                    "format": "text",
-                                                    "contents": "The list of allowable characters."
-                                                }
-                                            }
-                                        }
-                                    }
-                                }]
-                            }
-                        }
-                    }
-                }]
-            }
-        }, {
-            "data": {
-                "name": "start",
-                "optional": true,
-                "types": [{
-                    "data": {
-                        "type_name": "int",
-                        "description": {
-                            "data": {
-                                "blocks": [{
-                                    "data": {
-                                        "translations": {
-                                            "en": {
-                                                "meta": {},
-                                                "data": {
-                                                    "lang": "en",
-                                                    "format": "text",
-                                                    "contents": "The position in <parameter>subject<\/parameter> to start searching.\n\nIf <parameter>start<\/parameter> is given and is non-negative, then <function>strspn<\/function> will begin examining <parameter>subject<\/parameter> at the <parameter>start<\/parameter> 'th position. For instance, in the string ' <literal>abcdef<\/literal> ', the character at position <literal>0<\/literal> is ' <literal>a<\/literal> ', the character at position <literal>2<\/literal> is ' <literal>c<\/literal> ', and so forth.\n\nIf <parameter>start<\/parameter> is given and is negative, then <function>strspn<\/function> will begin examining <parameter>subject<\/parameter> at the <parameter>start<\/parameter> 'th position from the end of <parameter>subject<\/parameter> ."
-                                                }
-                                            }
-                                        }
-                                    }
-                                }]
-                            }
-                        }
-                    }
-                }]
-            }
-        }, {
-            "data": {
-                "name": "length",
-                "optional": true,
-                "types": [{
-                    "data": {
-                        "type_name": "int",
-                        "description": {
-                            "data": {
-                                "blocks": [{
-                                    "data": {
-                                        "translations": {
-                                            "en": {
-                                                "meta": {},
-                                                "data": {
-                                                    "lang": "en",
-                                                    "format": "text",
-                                                    "contents": "The length of the segment from <parameter>subject<\/parameter> to examine.\n\nIf <parameter>length<\/parameter> is given and is non-negative, then <parameter>subject<\/parameter> will be examined for <parameter>length<\/parameter> characters after the starting position.\n\nIf <parameter>length<\/parameter> is given and is negative, then <parameter>subject<\/parameter> will be examined from the starting position up to <parameter>length<\/parameter> characters from the end of <parameter>subject<\/parameter> ."
-                                                }
-                                            }
-                                        }
-                                    }
-                                }]
-                            }
-                        }
-                    }
-                }]
-            }
-        }]
-    }
-}
 
 phpdoc.Editor.FeatureBlock = function (editor, label, id) {
     var self = this,
@@ -532,24 +400,22 @@ phpdoc.Editor.FeatureBlock = function (editor, label, id) {
         menu_bar,
         menu_title,
         menu_tools,
-        content_area;
+        content_area,
+        tool_area,
+        visible_state_icon;
 
-    element = $('<div style="border: 1px solid #eeeeee; margin: 5px; margin-left: 10px; margin-right: 10px"></div>').append(
+    element = $('<div style="border: 1px solid #eeeeee; margin-bottom: 5px"></div>').append(
         menu_bar = $('<div class="fbar-title"></div>')
             .append(
+                visible_state_icon = $('<img style="margin-right: 5px; vertical-align: center">'),
                 menu_title = $('<span style="cursor: pointer"></span>').text(label),
-                menu_tools = $('<span style="float: right"></span>').append(
-                    events.onClickAdd.icon = $('<img src="./assets/icons/silk/add.png" alt="add" style="cursor: pointer; margin: 3px; display: none; vertical-align: center" />').click(function (e) {
-                        if (events.onClickAdd.callback) {
-                            events.onClickAdd.callback.call(null, e);
-                        }
-                        self.show();
-                    })
-                )
+                menu_tools = $('<span style="float: right"></span>')
             ).click(function () {
-                content_area.toggle(!content_area.is(':visible'));
+                content_area.is(':visible') ? self.hide() : self.show();
             }),
-        content_area = $('<div style="padding: 5px; display: none"></div>').append(top || {})
+        content_area = $('<div class="fbar-content-area" style="padding: 10px"></div>').append(top || {}),
+        tool_area = $('<div style="padding: 5px; padding-top: 0px; text-align: right; display: none;"></div>'),
+        $('<div style="clear: both"></div>')
     );
 
     /**
@@ -579,16 +445,39 @@ phpdoc.Editor.FeatureBlock = function (editor, label, id) {
     };
 
     /**
-     * Bind a callback to the append event
-     *
-     * @param callback
+     * Removes the title bar and padding from around this item
      * @return {phpdoc.Editor.FeatureBlock}
      */
 
-    this.onClickAdd = function (callback) {
-        events.onClickAdd.icon.show();
-        events.onClickAdd.callback = callback;
-        return this;
+    this.compact = function() {
+        menu_bar.hide();
+        element.css('border', '0px');
+        content_area.css('margin-left', 0).css('margin-right', 0).css('margin-top', 0).css('padding', 0);
+        return self;
+    };
+
+    /**
+     * Adds a button at the bottom of the feature area
+     *
+     * @param {string} label
+     * @param {string} icon
+     * @param {function} callback
+     */
+
+    this.addFooterButton = function(label, icon, callback) {
+        let btn = $('<span class="fe-button" ></span>').append(
+            $('<img style="margin-right: 3px" />').attr('alt', label).attr('src', '/assets/icons/' + icon),
+            $('<span style="font-size: smaller"></span>').text(label)
+        ).click(function(e) {
+            callback.call(null, e);
+        });
+
+        tool_area.append(btn);
+        if (content_area.is(':visible')) {
+            tool_area.show();
+        }
+
+        return self;
     };
 
     /**
@@ -609,6 +498,23 @@ phpdoc.Editor.FeatureBlock = function (editor, label, id) {
      */
     this.show = function () {
         content_area.slideDown();
+        visible_state_icon.attr('src', '/assets/icons/silk/folder_page_white.png');
+        if (tool_area.children().length) {
+            tool_area.show();
+        }
         return self;
     };
+
+    /**
+     * Collapses the window
+     * @return {phpdoc.Editor.FeatureBlock}
+     */
+    this.hide = function() {
+        visible_state_icon.attr('src', '/assets/icons/silk/folder.png');
+        content_area.slideUp();
+        tool_area.hide();
+        return self;
+    };
+
+    this.hide();
 };

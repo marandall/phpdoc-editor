@@ -31,7 +31,7 @@ phpdoc.elements.Parameter = function (editor, init) {
             ),
             _element_types = $('<div></div>'),
         ])
-        .onClickAdd(function (e) {
+        .addFooterButton('Declare Type', 'silk/add.png', function (e) {
             let type_name = prompt('Please enter the type');
             if (type_name) {
                 _types.push(phpdoc.elements.ParameterType.CreateFromTypeName(editor, type_name));

@@ -10,10 +10,10 @@ phpdoc.elements.Method = function (editor, init) {
         state = init.data,
         name = state.name,
         purpose_node = new phpdoc.elements.Section(editor, state.purpose || {}),
-        description_node = new phpdoc.elements.SectionCollection(editor, state.description || {}),
-        examples_node = new phpdoc.elements.SectionCollection(editor, state.examples || {}),
-        notes_node = new phpdoc.elements.SectionCollection(editor, state.notes || {}),
-        return_value_description = new phpdoc.elements.SectionCollection(editor, state.return_value_description || {}),
+        description_node = new phpdoc.elements.SectionCollection(editor, state.description || {}, { compact: true}),
+        examples_node = new phpdoc.elements.SectionCollection(editor, state.examples || {}, { compact: true}),
+        notes_node = new phpdoc.elements.SectionCollection(editor, state.notes || {}, { compact: true}),
+        return_value_description = new phpdoc.elements.SectionCollection(editor, state.return_value_description || {}, { compact: true}),
         parameters = [],
         return_types = [],
         _return_type_element,
@@ -38,7 +38,7 @@ phpdoc.elements.Method = function (editor, init) {
             editor.makeFeatureBlock('parameters')
                 .setTitle('Function Parameters')
                 .append(_parameter_elements = $('<div></div>'))
-                .onClickAdd(function (e) {
+                .addFooterButton('New Parameter', 'silk/add.png', function (e) {
                     let name = prompt('Please enter the name of the parameter', 'Enter Name');
                     if (name) {
                         _self.addParameter(phpdoc.elements.Parameter.CreateFromName(editor, name, false));
@@ -47,7 +47,7 @@ phpdoc.elements.Method = function (editor, init) {
                 .getElement(),
 
             editor.makeFeatureBlock('return_value')
-                .onClickAdd(function (e) {
+                .addFooterButton('New Return Value', 'silk/add.png', function (e) {
                     let name = prompt('Please enter the type of the return value', '');
                     if (name) {
                         _self.addReturnType(phpdoc.elements.ReturnTypeNode.CreateWithType(editor, name));

@@ -3,7 +3,7 @@
  * @param {object} init
  * @constructor
  */
-phpdoc.elements.SectionCollection = function (editor, init) {
+phpdoc.elements.SectionCollection = function (editor, init, config) {
     var _self = this,
         _meta = init.meta || {},
         _state = init.data || {},
@@ -11,6 +11,9 @@ phpdoc.elements.SectionCollection = function (editor, init) {
         _element,
         _content_element = $('<div></div>');
 
+    config = $.extend({
+        compact: false
+    }, config || {});
 
     this.addBlock = function(block) {
         _blocks.push(block);
@@ -25,14 +28,14 @@ phpdoc.elements.SectionCollection = function (editor, init) {
     _element = editor.makeFeatureBlock('section')
         .setTitle('Text Content Collection')
         .append(_content_element)
-        .onClickAdd(function(e) {
+        .addFooterButton('Extend (New Section)', 'silk/add.png', function(e) {
             let b = phpdoc.elements.Section.CreateEmptyBlock(editor);
             _self.addBlock(b);
-        })
-        .getElement();
+        });
+
 
     this.getElement = function () {
-        return _element;
+        return _element.getElement();
     };
 
     /**
@@ -56,4 +59,9 @@ phpdoc.elements.SectionCollection = function (editor, init) {
     $.each(_state.blocks || [], function(ix, block_config) {
         loadBlockFromConfiguration(block_config);
     });
+
+    if (config.compact === true) {
+        _element.show();
+        _element.compact();
+    }
 };

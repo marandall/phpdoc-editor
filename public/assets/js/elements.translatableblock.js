@@ -15,7 +15,7 @@ phpdoc.elements.Section = function (editor, init) {
     element = editor.makeFeatureBlock('block')
         .setTitle('Text Section')
         .append(translations_element = $('<div></div>'))
-        .onClickAdd(function(e) {
+        .addFooterButton('Add or Translate', 'silk/add.png', function(e) {
             let menu = new pfw.ui.ContextMenu({title: 'Select Language'});
             $.each(editor.getLanguageList(), function(code, name) {
                 menu.add(name, '', function() {
