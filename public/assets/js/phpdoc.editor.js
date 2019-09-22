@@ -80,6 +80,16 @@ var config_data = {
                                                                 "format": "text",
                                                                 "contents": "The string to examine."
                                                             }
+                                                        },
+                                                        "fr": {
+                                                            "meta": {
+                                                                "modified": 1569182561.092
+                                                            },
+                                                            "data": {
+                                                                "lang": "fr",
+                                                                "format": "text",
+                                                                "contents": "La chaîne à analyser."
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -117,6 +127,16 @@ var config_data = {
                                                                 "lang": "en",
                                                                 "format": "text",
                                                                 "contents": "The list of allowable characters."
+                                                            }
+                                                        },
+                                                        "fr": {
+                                                            "meta": {
+                                                                "modified": 1569182574.522
+                                                            },
+                                                            "data": {
+                                                                "lang": "fr",
+                                                                "format": "text",
+                                                                "contents": "La liste des caractères autorisés."
                                                             }
                                                         }
                                                     }
@@ -156,6 +176,16 @@ var config_data = {
                                                                 "format": "text",
                                                                 "contents": "The position in <parameter>subject</parameter> to start searching.\n\nIf <parameter>start</parameter> is given and is non-negative, then <function>strspn</function> will begin examining <parameter>subject</parameter> at the <parameter>start</parameter> 'th position. For instance, in the string ' <literal>abcdef</literal> ', the character at position <literal>0</literal> is ' <literal>a</literal> ', the character at position <literal>2</literal> is ' <literal>c</literal> ', and so forth.\n\nIf <parameter>start</parameter> is given and is negative, then <function>strspn</function> will begin examining <parameter>subject</parameter> at the <parameter>start</parameter> 'th position from the end of <parameter>subject</parameter> ."
                                                             }
+                                                        },
+                                                        "fr": {
+                                                            "meta": {
+                                                                "modified": 1569182591.118
+                                                            },
+                                                            "data": {
+                                                                "lang": "fr",
+                                                                "format": "text",
+                                                                "contents": "La position dans la chaîne subject à partir de laquelle nous devons chercher.\n\nSi start est fourni et n'est pas négatif, alors strspn() commencera à analyser la chaîne subject à la position start. Par exemple, dans la chaîne 'abcdef', le caractère à la position 0 est 'a', le caractère à la position 2 est 'c', et ainsi de suite.\n\nSi start est fourni et est négatif, alors strspn() commencera à analyser la chaîne subject à la position start depuis la fin de la chaîne subject."
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -193,6 +223,16 @@ var config_data = {
                                                                 "lang": "en",
                                                                 "format": "text",
                                                                 "contents": "The length of the segment from <parameter>subject</parameter> to examine.\n\nIf <parameter>length</parameter> is given and is non-negative, then <parameter>subject</parameter> will be examined for <parameter>length</parameter> characters after the starting position.\n\nIf <parameter>length</parameter> is given and is negative, then <parameter>subject</parameter> will be examined from the starting position up to <parameter>length</parameter> characters from the end of <parameter>subject</parameter> ."
+                                                            }
+                                                        },
+                                                        "fr": {
+                                                            "meta": {
+                                                                "modified": 1569182607.232
+                                                            },
+                                                            "data": {
+                                                                "lang": "fr",
+                                                                "format": "text",
+                                                                "contents": "La longueur de la chaîne à analyser.\n\nSi length est fourni et n'est pas négatif, alors subject sera examiné sur length caractères après la position de départ.\n\nSi length est fourni et est négatif, alors subject sera examiné sur length caractères depuis la fin de la chaîne subject."
                                                             }
                                                         }
                                                     }
@@ -265,7 +305,16 @@ var config_data = {
         "return_value_description": {
             "meta": {},
             "data": {
-                "blocks": []
+                "blocks": [
+                    {
+                        "meta": {
+                            "modified": 1569180929.538
+                        },
+                        "data": {
+                            "translations": {}
+                        }
+                    }
+                ]
             }
         },
         "return_types": [

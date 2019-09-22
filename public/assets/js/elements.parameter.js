@@ -29,6 +29,7 @@ phpdoc.elements.Parameter = function (editor, init) {
                 _element_default_value = $('<input type="text" />').val(_state.default_value || ''),
                 $('<span></span>').text('Default Value')
             ),
+            $('<h5 style="padding-top: 5px; padding-bottom: 5px"></h5>').text('Declared Types'),
             _element_types = $('<div></div>'),
         ])
         .addFooterButton('Declare Type', 'silk/add.png', function (e) {

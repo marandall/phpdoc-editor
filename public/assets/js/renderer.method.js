@@ -1,21 +1,12 @@
 phpdoc.renderers.SegmentContainerRender = function () {
+    var renderer = new phpdoc.renderers.TextSegmentRenderer();
     this.render = function (segment_container_data) {
         var container = $('<div></div>');
 
-
         $.each(segment_container_data.blocks, function (ix, segment) {
-            if (segment.data.translations.en) {
-                var en_contents = segment.data.translations.en.data.contents;
-                if (en_contents.indexOf('<?php') === 0) {
-                    container.append(
-                        $('<div style="margin-bottom: 1em; font-size: 14px; padding: 10px; background: #dddddd; font-family: \'Courier New\'; white-space: pre-wrap ">').text(en_contents)
-                    );
-                } else {
-                    container.append(
-                        $('<div style="margin-bottom: 1em; font-size: 14px; white-space: pre-wrap">').text(en_contents)
-                    );
-                }
-            }
+            container.append(
+                renderer.render(segment)
+            );
         });
 
         return container;
@@ -24,24 +15,49 @@ phpdoc.renderers.SegmentContainerRender = function () {
 
 phpdoc.renderers.TextSegmentRenderer = function () {
     this.render = function (segment) {
-        if (segment.data.translations.en) {
-            let en_contents = segment.data.translations.en.data.contents,
-                container = $('<div></div>');
+        let icons = {
+            en: '/assets/icons/languages/gb.png',
+            fr: '/assets/icons/languages/fr.png'
+        };
 
-            if (en_contents.indexOf('<?php') === 0) {
-                container.append(
-                    $('<div style="margin-bottom: 1em; font-size: 14px; padding: 10px; background: #dddddd; font-family: \'Courier New\'; white-space: pre-wrap ">').text(en_contents)
-                );
-            } else {
-                container.append(
-                    $('<div style="margin-bottom: 1em; font-size: 14px; white-space: pre-wrap">').text(en_contents)
-                );
+        let wrapper,
+            language_bar,
+            content_panel;
+
+
+        wrapper = $('<div></div>').append(
+            language_bar = $('<div style="padding-right: 3px"></div>'),
+            content_panel = $('<div></div>')
+        );
+
+        $.each(segment.data.translations, function (ix, translation) {
+            let en_contents = translation.data.contents,
+                code = translation.data.lang,
+                container,
+                code_icon = icons[code];
+
+            if (code_icon !== undefined) {
+                language_bar.append(
+                    $('<img style="cursor: pointer; margin-right: 5px" />').attr('src', code_icon).click(function () {
+                        content_panel.children().hide();
+                        container.show();
+                    })
+                )
             }
 
-            return container;
-        }
+            if (en_contents.indexOf('<?php') === 0) {
+                container = $('<div style="margin-bottom: 1em; font-size: 14px; padding: 10px; background: #dddddd; font-family: \'Courier New\'; white-space: pre-wrap "></div>').text(en_contents);
+            } else {
+                container = $('<div style="margin-bottom: 1em; font-size: 14px; white-space: pre-wrap"></div>').text(en_contents);
+            }
 
-        return null;
+            content_panel.append(container.hide());
+            if (code === 'en') {
+                container.show();
+            }
+        });
+
+        return wrapper;
     };
 };
 
